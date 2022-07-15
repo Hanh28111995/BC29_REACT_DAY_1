@@ -1,16 +1,27 @@
-import phoneList from "../../Data/danhSachGhe.json";
+import data from "../../Data/danhSachGhe.json";
 
 const DEFAULT_sTATE = {
-    selectedPhone: phoneList[0],
-    cartList: [],
-};
+    // name: "",
+    // soVe: 0,
+    // selectedTicket: data,
+    // status: "disabled",
+  };
 
-export const phoneReducer = (state = DEFAULT_sTATE, action) => {
+export const TicketReducer = (state = DEFAULT_sTATE, action) => {
     switch (action.type) {
-        case "SELECT_PHONE": {
-            state.selectedPhone = action.payload;
+        case "SELECT_TICKET": {
+            const dataC = [...state.data];
+            
+
+            state.selectedTicket = action.payload;
             return { ...state };
         }
+
+
+
+
+
+
         case "ADD_TO_CARD": {
             const data = [...state.cartList];
             const idx = data.findIndex((ele) => ele.maSP === action.payload.maSP);

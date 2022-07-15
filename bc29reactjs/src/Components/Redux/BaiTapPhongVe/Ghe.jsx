@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
 import data from "../../../Data/danhSachGhe.json";
-
-import { connect } from "react-redux";
+import ChitietGhe from "./ChitietGhe";
 
 export default class Ghe extends Component {
+
   renderContent = () => {
     return data.map((item, index) => {
       if (item.hang !== "") {
@@ -13,42 +13,23 @@ export default class Ghe extends Component {
             <tr key={index} className="row_hall">
               <td className="firstChar">{item.hang}</td>
               <td className="rowSeat">
-                {item.danhSachGhe.map((ghe) => {
-                  return (
-                    <td key={ghe.soGhe}>
-                      <div className="col_hall">
-                        <input
-                          type="checkbox"
-                          className="seats"
-                          defaultValue={ghe.soGhe}
-                          disabled
-                        />
-                      </div>
-                    </td>
-                  );
-                })}
+                <ChitietGhe soghe={item.danhSachGhe}
+                  selectTick={this.props.selectTick}
+                  soVe={this.props.soVe}
+                />
               </td>
             </tr>
+
           );
         } else {
           return (
             <tr key={index}>
               <td className="firstChar">{item.hang}</td>
-              <td>
-                {item.danhSachGhe.map((ghe) => {
-                  return (
-                    <td key={ghe.soGhe}>
-                      <div className="col_hall">
-                        <input
-                          type="checkbox"
-                          className="seats"
-                          defaultValue={ghe.soGhe}
-                          disabled
-                        />
-                      </div>
-                    </td>
-                  );
-                })}
+              <td className="rowSeat">
+                <ChitietGhe soghe={item.danhSachGhe}
+                  selectTick={this.props.selectTick}
+                  soVe={this.props.soVe}
+                />
               </td>
             </tr>
           );
@@ -60,9 +41,9 @@ export default class Ghe extends Component {
             <td>
               {item.danhSachGhe.map((ghe) => {
                 return (
-                  <td className="rowNumber stt" key={ghe.soGhe}>
+                  <div className="rowNumber stt" key={ghe.soGhe}>
                     <div className="col_hall">{ghe.soGhe}</div>
-                  </td>
+                  </div>
                 );
               })}
             </td>
@@ -73,6 +54,6 @@ export default class Ghe extends Component {
   };
 
   render() {
-    return <tbody>{this.renderContent()}</tbody>;
+    return <tbody>{this.renderContent()}</tbody>
   }
 }
