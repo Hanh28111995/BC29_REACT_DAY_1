@@ -228,3 +228,7 @@ tr, td  {
     display: flex;
     align-items: baseline;
 }
+.show 
+{
+    display: none;
+}

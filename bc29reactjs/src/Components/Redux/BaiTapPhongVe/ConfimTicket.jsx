@@ -6,9 +6,9 @@ import Ghe from './Ghe';
 export default class ConfimTicket extends Component {
 
     render() {
-        if (this.props.status === "enabled") {
+       
             return (
-                <div className="mx-auto">
+                <div className="mx-auto show">
                     <ul className="seat_w3ls">
                         <li className="smallBox greenBox">Selected Seat</li>
                         <li className="smallBox orangeBox">Reserved Seat</li>
@@ -21,7 +21,7 @@ export default class ConfimTicket extends Component {
                     >
                         <p id="notification" />
                         <table id="seatsBlock">
-                            <Ghe selectTick={this.props.selectTick} soVe={this.props.soVe} 
+                            <Ghe selectTick={this.props.selectTick}  
                             />
                         </table>
                         <div className="screen mx-auto">
@@ -35,6 +35,6 @@ export default class ConfimTicket extends Component {
                     </div>
                 </div>
             )
-        }
+        
     }
 }
