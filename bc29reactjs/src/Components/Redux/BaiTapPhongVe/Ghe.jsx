@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-
-import data from "../../../Data/danhSachGhe.json";
+import "./BaiTapBookingTicket.css";
 import ChitietGhe from "./ChitietGhe";
+import {connect} from "react-redux";
 
-export default class Ghe extends Component {
+
+class Ghe extends Component {
 
   renderContent = () => {
-    return data.map((item, index) => {
-      if (item.hang !== "") {
+    const DA = this.props.selectedTicket;
+    console.log(DA);
+    return DA.map((item, index) => {
+      if (item.hang !== " ") {
         if (item.hang === "E") {
           return (
             <tr key={index} className="row_hall flex_seat">
@@ -28,6 +31,7 @@ export default class Ghe extends Component {
               <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
+                  soVe={this.props.soVe}
                 />
               </td>
             </tr>
@@ -35,7 +39,7 @@ export default class Ghe extends Component {
         }
       } else {
         return (
-          <tr key={index}>
+          <tr key={index} className="flex_seat">
             <td className="firstChar flex_seat">{item.hang}</td>
             <td className="flex_seat">
               {item.danhSachGhe.map((ghe) => {
@@ -56,3 +60,9 @@ export default class Ghe extends Component {
     return <tbody>{this.renderContent()}</tbody>
   }
 }
+const mapStateToProps = (state)=> {
+  return {
+    ...state.DatVe,
+  }
+};
+export default connect(mapStateToProps)(Ghe);

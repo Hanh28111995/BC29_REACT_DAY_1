@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import data from "../../../Data/danhSachGhe.json";
 import "./BaiTapBookingTicket.css";
 import Ghe from './Ghe';
+import { connect } from "react-redux";
 
-export default class ConfimTicket extends Component {
+
+class ConfimTicket extends Component {
 
     render() {
        
@@ -21,7 +22,9 @@ export default class ConfimTicket extends Component {
                     >
                         <p id="notification" />
                         <table id="seatsBlock">
-                            <Ghe selectTick={this.props.selectTick}  
+                            <Ghe 
+                            // selectTick={this.props.selectTick}  
+                            selectedTicket = {this.state.selectedTicket}
                             />
                         </table>
                         <div className="screen mx-auto">
@@ -35,6 +38,12 @@ export default class ConfimTicket extends Component {
                     </div>
                 </div>
             )
-        
     }
 }
+const mapStateToProps = (state)=> {
+  return {
+    ...state.DatVe,
+  }
+};
+export default connect(mapStateToProps)(ConfimTicket);
+

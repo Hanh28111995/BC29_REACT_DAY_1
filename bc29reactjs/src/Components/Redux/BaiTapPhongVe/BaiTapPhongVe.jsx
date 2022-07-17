@@ -5,6 +5,8 @@ import ConfimTicket from "./ConfimTicket";
 
 export default class BaiTapPhongVe extends Component {
   state = {
+    name: "",
+    soVe: "",
     selectedTicket: data,
     checkedTicket: [],
   };
@@ -59,9 +61,25 @@ export default class BaiTapPhongVe extends Component {
     document.getElementById("nameDisplay").value = this.state.name;
     document.getElementById("NumberDisplay").value = this.state.soVe;  
     document.getElementById("seatsDisplay").value = this.state.checkedTicket;
+    let new_data = this.state.selectedTicket;
+    new_data.map((item) => {
+      if (item.hang !== "") {
+        item.danhSachGhe.map((ele,index)=>{
+          console.log(ele.soGhe)    
+          for(let i = 0; i< this.state.checkedTicket.length; i++){
+            if (this.state.checkedTicket[i] == ele.soGhe) { ele.daDat = true; }
+            else {ele.daDat = false;}
+          }
+        })
+      }
+    })
+    this.setState({
+      selectedTicket: new_data,
+    })
+
+
+
   }
-
-
   render() {
     return (
       <div>
@@ -95,9 +113,9 @@ export default class BaiTapPhongVe extends Component {
             {/* //input fields */}
             {/*-728x90-*/}
             {/* seat availabilty list */}
-            <ConfimTicket status={this.state.status}
+            <ConfimTicket 
               selectTick={this.selectTick}
-              soVe={this.state.soVe}
+              // soVe={this.state.soVe}
               confirmData = {this.confirmData}
             />
             <div

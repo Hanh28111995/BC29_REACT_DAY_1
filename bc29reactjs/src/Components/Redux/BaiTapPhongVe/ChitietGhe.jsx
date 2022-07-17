@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
+import "./BaiTapBookingTicket.css";
 
 export default class ChitietGhe extends Component {
     render() {
-        const {
-            soGhe,
-            daDat,
-        } = this.props.soghe;
-
         return(
         this.props.soghe.map((ghe) => {
             // console.log(this.props.soghe);
