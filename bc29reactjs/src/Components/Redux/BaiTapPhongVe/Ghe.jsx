@@ -10,9 +10,9 @@ export default class Ghe extends Component {
       if (item.hang !== "") {
         if (item.hang === "E") {
           return (
-            <tr key={index} className="row_hall">
-              <td className="firstChar">{item.hang}</td>
-              <td className="rowSeat">
+            <tr key={index} className="row_hall flex_seat">
+              <td className="firstChar flex_seat">{item.hang}</td>
+              <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
                   soVe={this.props.soVe}
@@ -23,12 +23,11 @@ export default class Ghe extends Component {
           );
         } else {
           return (
-            <tr key={index}>
-              <td className="firstChar">{item.hang}</td>
-              <td className="rowSeat">
+            <tr key={index} className="flex_seat">
+              <td className="firstChar flex_seat">{item.hang}</td>
+              <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
-                  soVe={this.props.soVe}
                 />
               </td>
             </tr>
@@ -37,8 +36,8 @@ export default class Ghe extends Component {
       } else {
         return (
           <tr key={index}>
-            <td className="firstChar">{item.hang}</td>
-            <td>
+            <td className="firstChar flex_seat">{item.hang}</td>
+            <td className="flex_seat">
               {item.danhSachGhe.map((ghe) => {
                 return (
                   <div className="rowNumber stt" key={ghe.soGhe}>

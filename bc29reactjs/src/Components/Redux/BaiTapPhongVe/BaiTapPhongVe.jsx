@@ -19,6 +19,12 @@ export default class BaiTapPhongVe extends Component {
     this.enable_selectTable(false);
   };
 
+  enable_selectTable = (boleen) => {
+    let c = document.querySelectorAll("input.seats");
+    for (let i = 0; i < c.length; i++) {
+      c[i].disabled = boleen; }
+  }
+
   selectTick = (x, e, d) => {
     let checkValue = e.target.checked;
     var dataC = this.state.checkedTicket;
@@ -32,7 +38,6 @@ export default class BaiTapPhongVe extends Component {
         dataC = filterResult;
       }
     }
-
     this.setState({
       checkedTicket: dataC,
     });
@@ -50,11 +55,12 @@ export default class BaiTapPhongVe extends Component {
     }
   }
 
-  enable_selectTable = (boleen) => {
-    let c = document.querySelectorAll("input.seats");
-    for (let i = 0; i < c.length; i++) {
-      c[i].disabled = boleen; }
+  confirmData = () => {
+    document.getElementById("nameDisplay").value = this.state.name;
+    document.getElementById("NumberDisplay").value = this.state.soVe;  
+    document.getElementById("seatsDisplay").value = this.state.checkedTicket;
   }
+
 
   render() {
     return (
@@ -92,6 +98,7 @@ export default class BaiTapPhongVe extends Component {
             <ConfimTicket status={this.state.status}
               selectTick={this.selectTick}
               soVe={this.state.soVe}
+              confirmData = {this.confirmData}
             />
             <div
               className="displayerBoxes txt-center"

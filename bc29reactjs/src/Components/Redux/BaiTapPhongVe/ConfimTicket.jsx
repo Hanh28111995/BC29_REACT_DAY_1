@@ -28,7 +28,7 @@ export default class ConfimTicket extends Component {
                             <h2 className="wthree">Screen this way</h2>
                         </div>
                         <div className="text-center my-3">
-                            <button className="confirm_btn" >
+                            <button className="confirm_btn" onClick={() => this.props.confirmData()}>
                                 Confirm Selection
                             </button>
                         </div>
