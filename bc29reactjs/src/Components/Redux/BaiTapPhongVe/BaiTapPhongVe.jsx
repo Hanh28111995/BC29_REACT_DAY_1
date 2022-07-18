@@ -17,22 +17,25 @@ export default class BaiTapPhongVe extends Component {
       name: document.getElementById("Username").value,
       soVe: document.getElementById("Numseats").value,
     });
-    document.querySelector('.show').style.display = "block";
+    document.querySelector(".show").style.display = "block";
     this.enable_selectTable(false);
   };
 
   enable_selectTable = (boleen) => {
     let c = document.querySelectorAll("input.seats");
     for (let i = 0; i < c.length; i++) {
-      c[i].disabled = boleen; }
-  }
+      c[i].disabled = boleen;
+    }
+  };
 
   selectTick = (x, e, d) => {
     let checkValue = e.target.checked;
     var dataC = this.state.checkedTicket;
-    // const idx = dataC.findIndex((ele) => ele.maSP === phone.maSP);
+
     if (x === false) {
-      if (checkValue === true) { dataC.push(d); }
+      if (checkValue === true) {
+        dataC.push(d);
+      }
       if (checkValue === false) {
         let filterResult = dataC.filter(function (element) {
           return element !== d;
@@ -43,43 +46,49 @@ export default class BaiTapPhongVe extends Component {
     this.setState({
       checkedTicket: dataC,
     });
-    
+
     if (dataC.length == this.state.soVe) {
       this.enable_selectTable(true);
-      for (let i=0 ; i < dataC.length; i++)
-      {
+      // console.log("1");
+      for (let i = 0; i < dataC.length; i++) {
         document.getElementById(dataC[i]).disabled = false;
-        console.log(dataC[i])
+        console.log(dataC[i]);
       }
     }
     if (dataC.length < this.state.soVe) {
       this.enable_selectTable(false);
     }
-  }
+    console.log(this.state.soVe)
+  };
+
+
 
   confirmData = () => {
     document.getElementById("nameDisplay").value = this.state.name;
-    document.getElementById("NumberDisplay").value = this.state.soVe;  
+    document.getElementById("NumberDisplay").value = this.state.soVe;
     document.getElementById("seatsDisplay").value = this.state.checkedTicket;
     let new_data = this.state.selectedTicket;
     new_data.map((item) => {
       if (item.hang !== "") {
-        item.danhSachGhe.map((ele,index)=>{
-          console.log(ele.soGhe)    
-          for(let i = 0; i< this.state.checkedTicket.length; i++){
-            if (this.state.checkedTicket[i] == ele.soGhe) { ele.daDat = true; }
-            else {ele.daDat = false;}
+        item.danhSachGhe.map((ele, index) => {
+          // console.log(ele.soGhe)
+          for (let i = 0; i < this.state.checkedTicket.length; i++) {
+            if (this.state.checkedTicket[i] == ele.soGhe) {
+              ele.daDat = true;
+            }
+            // else {ele.daDat = false;}
           }
-        })
+        });
       }
-    })
+    });
     this.setState({
+      name: "",
+      soVe: "",
+      checkedTicket: [],
       selectedTicket: new_data,
-    })
+    });
 
-
-
-  }
+  };
   render() {
     return (
       <div>
@@ -108,15 +117,18 @@ export default class BaiTapPhongVe extends Component {
                 </div>
               </div>
               <div className="text-center my-3">
-                <button className="confirm_btn" onClick={() => this.takeData()}>Start Selecting</button></div>
+                <button className="confirm_btn" onClick={() => this.takeData()}>
+                  Start Selecting
+                </button>
+              </div>
             </div>
             {/* //input fields */}
             {/*-728x90-*/}
             {/* seat availabilty list */}
-            <ConfimTicket 
+            <ConfimTicket
               selectTick={this.selectTick}
-              // soVe={this.state.soVe}
-              confirmData = {this.confirmData}
+              selectedTicket={this.state.selectedTicket}
+              confirmData={this.confirmData}
             />
             <div
               className="displayerBoxes txt-center"

@@ -4,7 +4,7 @@ import Ghe from './Ghe';
 import { connect } from "react-redux";
 
 
-class ConfimTicket extends Component {
+export default class ConfimTicket extends Component {
 
     render() {
        
@@ -18,13 +18,12 @@ class ConfimTicket extends Component {
 
                     <div
                         className="seatStructure txt-center mx-auto"
-                        style={{ overflowX: "auto" }}
                     >
                         <p id="notification" />
                         <table id="seatsBlock">
                             <Ghe 
-                            // selectTick={this.props.selectTick}  
-                            selectedTicket = {this.state.selectedTicket}
+                            selectTick={this.props.selectTick}  
+                            selectedTicket = {this.props.selectedTicket}
                             />
                         </table>
                         <div className="screen mx-auto">
@@ -40,10 +39,10 @@ class ConfimTicket extends Component {
             )
     }
 }
-const mapStateToProps = (state)=> {
-  return {
-    ...state.DatVe,
-  }
-};
-export default connect(mapStateToProps)(ConfimTicket);
+// const mapStateToProps = (state)=> {
+//   return {
+//     ...state.DatVe,
+//   }
+// };
+// export default connect(mapStateToProps)(ConfimTicket);
 

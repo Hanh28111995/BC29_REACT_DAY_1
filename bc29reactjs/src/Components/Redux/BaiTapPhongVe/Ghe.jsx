@@ -4,11 +4,11 @@ import ChitietGhe from "./ChitietGhe";
 import {connect} from "react-redux";
 
 
-class Ghe extends Component {
+export default class Ghe extends Component {
 
   renderContent = () => {
     const DA = this.props.selectedTicket;
-    console.log(DA);
+    // console.log(DA);
     return DA.map((item, index) => {
       if (item.hang !== " ") {
         if (item.hang === "E") {
@@ -18,7 +18,6 @@ class Ghe extends Component {
               <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
-                  soVe={this.props.soVe}
                 />
               </td>
             </tr>
@@ -60,9 +59,9 @@ class Ghe extends Component {
     return <tbody>{this.renderContent()}</tbody>
   }
 }
-const mapStateToProps = (state)=> {
-  return {
-    ...state.DatVe,
-  }
-};
-export default connect(mapStateToProps)(Ghe);
+// const mapStateToProps = (state)=> {
+//   return {
+//     ...state.DatVe,
+//   }
+// };
+// export default connect(mapStateToProps)(Ghe);
