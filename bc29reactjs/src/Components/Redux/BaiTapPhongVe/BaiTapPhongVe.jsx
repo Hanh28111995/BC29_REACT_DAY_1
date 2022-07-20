@@ -1,37 +1,48 @@
 import React, { Component } from "react";
 import data from "../../../Data/danhSachGhe.json";
 import "./BaiTapBookingTicket.css";
-import ConfimTicket from "./ConfimTicket";
+import Ghe from "./Ghe";
 
 export default class BaiTapPhongVe extends Component {
   state = {
     name: "",
-    soVe: "",
     selectedTicket: data,
     checkedTicket: [],
+    input_disabled: false,
+    show_block: [false,false]
   };
 
-  takeData = () => {
-    // console.log("1");
-    this.setState({
-      name: document.getElementById("Username").value,
-      soVe: document.getElementById("Numseats").value,
-    });
-    document.querySelector(".show").style.display = "block";
-    this.enable_selectTable(false);
+  getData = (event) => {
+    const name = this.name.value;
+    const NumberOfTicket = this.NumberOfTicket.value;
+    return [name, NumberOfTicket];
   };
 
   enable_selectTable = (boleen) => {
-    let c = document.querySelectorAll("input.seats");
-    for (let i = 0; i < c.length; i++) {
-      c[i].disabled = boleen;
-    }
+    this.setState({ input_disabled: boleen })
   };
+
+  takeData = () => {
+    const input_value = this.getData();
+    console.log(input_value);
+    this.setState({
+      name: input_value[0],
+      soVe: input_value[1],
+    });
+    this.setState({  show_block: [true,false] })
+
+    this.enable_selectTable(false);
+  };
+
+  
+
+
+
+
 
   selectTick = (x, e, d) => {
     let checkValue = e.target.checked;
     var dataC = this.state.checkedTicket;
-
     if (x === false) {
       if (checkValue === true) {
         dataC.push(d);
@@ -58,15 +69,11 @@ export default class BaiTapPhongVe extends Component {
     if (dataC.length < this.state.soVe) {
       this.enable_selectTable(false);
     }
-    console.log(this.state.soVe)
+    console.log(this.state.soVe);
   };
 
-
-
   confirmData = () => {
-    document.getElementById("nameDisplay").value = this.state.name;
-    document.getElementById("NumberDisplay").value = this.state.soVe;
-    document.getElementById("seatsDisplay").value = this.state.checkedTicket;
+    this.setState({  show_block: [true,true] })
     let new_data = this.state.selectedTicket;
     new_data.map((item) => {
       if (item.hang !== "") {
@@ -82,12 +89,8 @@ export default class BaiTapPhongVe extends Component {
       }
     });
     this.setState({
-      name: "",
-      soVe: "",
-      checkedTicket: [],
       selectedTicket: new_data,
     });
-
   };
   render() {
     return (
@@ -105,7 +108,13 @@ export default class BaiTapPhongVe extends Component {
                     Name
                     <span>*</span>
                   </label>
-                  <input type="text" id="Username" required />
+                  <input
+                    type="text"
+                    id="Username"
+                    required
+                    onChange={this.getData}
+                    ref={(input) => (this.name = input)}
+                  />
                 </div>
                 <div className="agileits-right">
                   <label>
@@ -113,7 +122,14 @@ export default class BaiTapPhongVe extends Component {
                     Number of Seats
                     <span>*</span>
                   </label>
-                  <input type="number" id="Numseats" required min={1} />
+                  <input
+                    type="number"
+                    id="Numseats"
+                    required
+                    min={0}
+                    onChange={this.getData}
+                    ref={(input) => (this.NumberOfTicket = input)}
+                  />
                 </div>
               </div>
               <div className="text-center my-3">
@@ -125,11 +141,45 @@ export default class BaiTapPhongVe extends Component {
             {/* //input fields */}
             {/*-728x90-*/}
             {/* seat availabilty list */}
-            <ConfimTicket
+            {/* <ConfimTicket
               selectTick={this.selectTick}
               selectedTicket={this.state.selectedTicket}
               confirmData={this.confirmData}
-            />
+            /> */}
+            { this.state.show_block[0] && (
+            <div className="mx-auto ">
+              <ul className="seat_w3ls">
+                <li className="smallBox greenBox">Selected Seat</li>
+                <li className="smallBox orangeBox">Reserved Seat</li>
+                <li className="smallBox emptyBox">Empty Seat</li>
+              </ul>
+
+              <div className="seatStructure txt-center mx-auto">
+                <p id="notification" />
+                <table id="seatsBlock">
+                  <Ghe
+                    selectTick={this.selectTick}
+                    selectedTicket={this.state.selectedTicket}
+                    input_disabled = {this.state.input_disabled}
+                  />
+                </table>
+                <div className="screen mx-auto">
+                  <h2 className="wthree">Screen this way</h2>
+                </div>
+                <div className="text-center my-3">
+                  <button
+                    className="confirm_btn"
+                    onClick={() => this.confirmData()}
+                  >
+                    Confirm Selection
+                  </button>
+                </div>
+              </div>
+            </div>
+            )
+            }
+
+{ this.state.show_block[1] && (
             <div
               className="displayerBoxes txt-center"
               style={{ overflowX: "auto" }}
@@ -143,18 +193,19 @@ export default class BaiTapPhongVe extends Component {
                   </tr>
                   <tr>
                     <td>
-                      <textarea id="nameDisplay" disabled defaultValue={""} />
+                      <textarea id="nameDisplay" disabled  value ={this.state.name}/>
                     </td>
                     <td>
-                      <textarea id="NumberDisplay" disabled defaultValue={""} />
+                      <textarea id="NumberDisplay" disabled  value ={this.state.checkedTicket.length}/>
                     </td>
                     <td>
-                      <textarea id="seatsDisplay" disabled defaultValue={""} />
+                      <textarea id="seatsDisplay" disabled  value ={this.state.checkedTicket} />
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+)}
             {/* //details after booking displayed here */}
           </div>
         </div>

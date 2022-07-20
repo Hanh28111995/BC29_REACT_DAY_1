@@ -235,7 +235,4 @@ tr.flex_seat, td.flex_seat  {
     display: flex;
     /* align-items: baseline; */
 }
-.show 
-{
-    display: none;
-}
+

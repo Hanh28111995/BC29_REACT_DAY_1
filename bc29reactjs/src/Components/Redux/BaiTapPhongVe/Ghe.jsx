@@ -18,6 +18,7 @@ export default class Ghe extends Component {
               <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
+                  input_disabled = {this.props.input_disabled}
                 />
               </td>
             </tr>
@@ -30,7 +31,7 @@ export default class Ghe extends Component {
               <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
                   selectTick={this.props.selectTick}
-                  soVe={this.props.soVe}
+                  input_disabled = {this.props.input_disabled}
                 />
               </td>
             </tr>
