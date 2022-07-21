@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import data from "../../../Data/danhSachGhe.json";
 import "./BaiTapBookingTicket.css";
 import Ghe from "./Ghe";
+import { connect } from "react-redux";
 
-export default class BaiTapPhongVe extends Component {
+class BaiTapPhongVe extends Component {
   state = {
     name: "",
+    soVe: "",
     selectedTicket: data,
     checkedTicket: [],
-    input_disabled: false,
-    show_block: [false,false]
+
+    show_block: [false, false],
   };
 
   getData = (event) => {
@@ -19,26 +21,26 @@ export default class BaiTapPhongVe extends Component {
   };
 
   enable_selectTable = (boleen) => {
-    this.setState({ input_disabled: boleen })
+    let c = document.querySelectorAll("input.seats");
+    for (let i=0; i< c.length; i++)
+    {
+      c[i].disabled = boleen;
+    }
   };
 
   takeData = () => {
     const input_value = this.getData();
     console.log(input_value);
-    this.setState({
-      name: input_value[0],
-      soVe: input_value[1],
-    });
-    this.setState({  show_block: [true,false] })
-
-    this.enable_selectTable(false);
+    if (parseInt(input_value[1]) > 0) {
+      this.setState({
+        name: input_value[0],
+        soVe: input_value[1],
+        show_block: [true, false],
+      });
+      this.enable_selectTable(false);
+      this.props.take_Data([input_value[0],input_value[1],[true, false]]); ///// cái tui dispatch bên dưới là dòng n
+    }
   };
-
-  
-
-
-
-
 
   selectTick = (x, e, d) => {
     let checkValue = e.target.checked;
@@ -57,7 +59,6 @@ export default class BaiTapPhongVe extends Component {
     this.setState({
       checkedTicket: dataC,
     });
-
     if (dataC.length == this.state.soVe) {
       this.enable_selectTable(true);
       // console.log("1");
@@ -69,11 +70,11 @@ export default class BaiTapPhongVe extends Component {
     if (dataC.length < this.state.soVe) {
       this.enable_selectTable(false);
     }
-    console.log(this.state.soVe);
   };
 
   confirmData = () => {
-    this.setState({  show_block: [true,true] })
+    this.props.confirm_Data();
+    this.setState({ show_block: [true, true] });
     let new_data = this.state.selectedTicket;
     new_data.map((item) => {
       if (item.hang !== "") {
@@ -133,7 +134,7 @@ export default class BaiTapPhongVe extends Component {
                 </div>
               </div>
               <div className="text-center my-3">
-                <button className="confirm_btn" onClick={() => this.takeData()}>
+                <button className="confirm_btn" onClick={this.takeData}>
                   Start Selecting
                 </button>
               </div>
@@ -146,66 +147,80 @@ export default class BaiTapPhongVe extends Component {
               selectedTicket={this.state.selectedTicket}
               confirmData={this.confirmData}
             /> */}
-            { this.state.show_block[0] && (
-            <div className="mx-auto ">
-              <ul className="seat_w3ls">
-                <li className="smallBox greenBox">Selected Seat</li>
-                <li className="smallBox orangeBox">Reserved Seat</li>
-                <li className="smallBox emptyBox">Empty Seat</li>
-              </ul>
+            {this.state.show_block[0] && (
+              <div className="mx-auto ">
+                <ul className="seat_w3ls">
+                  <li className="smallBox greenBox">Selected Seat</li>
+                  <li className="smallBox orangeBox">Reserved Seat</li>
+                  <li className="smallBox emptyBox">Empty Seat</li>
+                </ul>
 
-              <div className="seatStructure txt-center mx-auto">
-                <p id="notification" />
-                <table id="seatsBlock">
-                  <Ghe
-                    selectTick={this.selectTick}
-                    selectedTicket={this.state.selectedTicket}
-                    input_disabled = {this.state.input_disabled}
-                  />
-                </table>
-                <div className="screen mx-auto">
-                  <h2 className="wthree">Screen this way</h2>
-                </div>
-                <div className="text-center my-3">
-                  <button
-                    className="confirm_btn"
-                    onClick={() => this.confirmData()}
-                  >
-                    Confirm Selection
-                  </button>
+                <div className="seatStructure txt-center mx-auto">
+                  <p id="notification" />
+                  <table id="seatsBlock">
+                    <Ghe
+                    // selectTick={this.selectTick}
+                    // selectedTicket={this.state.selectedTicket}
+                    // input_disabled = {this.state.input_disabled}
+                    />
+                  </table>
+                  <div className="screen mx-auto">
+                    <h2 className="wthree">Screen this way</h2>
+                  </div>
+                  <div className="text-center my-3">
+                    <button
+                      className="confirm_btn"
+                      onClick={() => {
+                        this.confirmData();
+                        // this.props.takeData({thísoVe, name, show_block })
+                      }}
+                    >
+                      Confirm Selection
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            )
-            }
+            )}
 
-{ this.state.show_block[1] && (
-            <div
-              className="displayerBoxes txt-center"
-              style={{ overflowX: "auto" }}
-            >
-              <table className="Displaytable w3ls-table" width="100%">
-                <tbody>
-                  <tr>
-                    <th>Name</th>
-                    <th>Number of Seats</th>
-                    <th>Seats</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <textarea id="nameDisplay" disabled  value ={this.state.name}/>
-                    </td>
-                    <td>
-                      <textarea id="NumberDisplay" disabled  value ={this.state.checkedTicket.length}/>
-                    </td>
-                    <td>
-                      <textarea id="seatsDisplay" disabled  value ={this.state.checkedTicket} />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-)}
+            {this.state.show_block[1] && (
+              <div
+                className="displayerBoxes txt-center"
+                style={{ overflowX: "auto" }}
+              >
+                <table className="Displaytable w3ls-table" width="100%">
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <th>Number of Seats</th>
+                      <th>Seats</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <textarea
+                          id="nameDisplay"
+                          disabled
+                          value={this.props.name}
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          id="NumberDisplay"
+                          disabled
+                          value={this.props.checkedTicket.length}
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          id="seatsDisplay"
+                          disabled
+                          value={this.props.checkedTicket}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
             {/* //details after booking displayed here */}
           </div>
         </div>
@@ -213,3 +228,31 @@ export default class BaiTapPhongVe extends Component {
     );
   }
 }
+
+const mapDispatchToProp = (dispatch) => {
+  return {
+    take_Data: (value) => {
+      // ở đây bóc ra để làm gì
+      dispatch({
+        type: "TAKE_DATA",
+        payload: value,
+      });
+    },
+
+    confirm_Data: (value) => {
+      // ở đây bóc ra để làm gì
+      dispatch({
+        type: "CONFIRM_DATA",
+        payload: value,
+      });
+    },
+
+
+  };
+};
+const mapStateToProps = (state) => {
+  return {
+    ...state.DatVe,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProp)(BaiTapPhongVe);

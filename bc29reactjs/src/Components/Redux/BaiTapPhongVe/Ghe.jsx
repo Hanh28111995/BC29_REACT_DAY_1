@@ -4,7 +4,7 @@ import ChitietGhe from "./ChitietGhe";
 import {connect} from "react-redux";
 
 
-export default class Ghe extends Component {
+class Ghe extends Component {
 
   renderContent = () => {
     const DA = this.props.selectedTicket;
@@ -17,7 +17,7 @@ export default class Ghe extends Component {
               <td className="firstChar flex_seat">{item.hang}</td>
               <td className="rowSeat flex_seat">
                 <ChitietGhe soghe={item.danhSachGhe}
-                  selectTick={this.props.selectTick}
+                  // selectTick={this.props.selectTick}
                   input_disabled = {this.props.input_disabled}
                 />
               </td>
@@ -29,8 +29,9 @@ export default class Ghe extends Component {
             <tr key={index} className="flex_seat">
               <td className="firstChar flex_seat">{item.hang}</td>
               <td className="rowSeat flex_seat">
-                <ChitietGhe soghe={item.danhSachGhe}
-                  selectTick={this.props.selectTick}
+                <ChitietGhe 
+                  soghe={item.danhSachGhe}
+                  // selectTick={this.props.selectTick}
                   input_disabled = {this.props.input_disabled}
                 />
               </td>
@@ -60,9 +61,9 @@ export default class Ghe extends Component {
     return <tbody>{this.renderContent()}</tbody>
   }
 }
-// const mapStateToProps = (state)=> {
-//   return {
-//     ...state.DatVe,
-//   }
-// };
-// export default connect(mapStateToProps)(Ghe);
+const mapStateToProps = (state)=> {
+  return {
+    ...state.DatVe,
+  }
+};
+export default connect(mapStateToProps)(Ghe);

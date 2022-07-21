@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import "./BaiTapBookingTicket.css";
+import {connect} from "react-redux";
 
-export default class ChitietGhe extends Component {
+class ChitietGhe extends Component {
     render() {
         return(
         this.props.soghe.map((ghe) => {
-            console.log(this.props.input_disabled);
+            // console.log(this.props.input_disabled);
             return (
                 <div className="stt" key={ghe.soGhe}>
                     <div className="col_hall">
@@ -14,8 +14,7 @@ export default class ChitietGhe extends Component {
                             type="checkbox"
                             className={ghe.daDat ? "orangeBox seats" : "seats"}
                             defaultValue={ghe.soGhe}
-                            onChange={(e) => this.props.selectTick(ghe.daDat, e, ghe.soGhe)}
-                            disabled = {this.props.input_disabled}
+                            onChange={(e) => this.props.selectTick([ghe.daDat, e, ghe.soGhe])}
                         />
                     </div>
                 </div>
@@ -23,3 +22,19 @@ export default class ChitietGhe extends Component {
         }))
     }
 }
+const mapDispatchToProp = (dispatch) => {
+    return{
+        selectTick: (param) => {
+        dispatch({
+          type: "SELECT_TICKET",
+          payload: param ,
+        }) 
+      }
+    }
+  }
+const mapStateToProps = (state)=> {
+  return {
+    ...state.DatVe,
+  }
+};
+export default connect(mapStateToProps,mapDispatchToProp)(ChitietGhe);
