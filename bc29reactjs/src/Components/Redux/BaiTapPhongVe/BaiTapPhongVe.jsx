@@ -5,94 +5,25 @@ import Ghe from "./Ghe";
 import { connect } from "react-redux";
 
 class BaiTapPhongVe extends Component {
-  state = {
-    name: "",
-    soVe: "",
-    selectedTicket: data,
-    checkedTicket: [],
-
-    show_block: [false, false],
-  };
+ 
 
   getData = (event) => {
     const name = this.name.value;
     const NumberOfTicket = this.NumberOfTicket.value;
     return [name, NumberOfTicket];
   };
-
-  enable_selectTable = (boleen) => {
-    let c = document.querySelectorAll("input.seats");
-    for (let i=0; i< c.length; i++)
-    {
-      c[i].disabled = boleen;
-    }
-  };
-
   takeData = () => {
     const input_value = this.getData();
     console.log(input_value);
     if (parseInt(input_value[1]) > 0) {
-      this.setState({
-        name: input_value[0],
-        soVe: input_value[1],
-        show_block: [true, false],
-      });
-      this.enable_selectTable(false);
       this.props.take_Data([input_value[0],input_value[1],[true, false]]); ///// cái tui dispatch bên dưới là dòng n
     }
   };
 
-  selectTick = (x, e, d) => {
-    let checkValue = e.target.checked;
-    var dataC = this.state.checkedTicket;
-    if (x === false) {
-      if (checkValue === true) {
-        dataC.push(d);
-      }
-      if (checkValue === false) {
-        let filterResult = dataC.filter(function (element) {
-          return element !== d;
-        });
-        dataC = filterResult;
-      }
-    }
-    this.setState({
-      checkedTicket: dataC,
-    });
-    if (dataC.length == this.state.soVe) {
-      this.enable_selectTable(true);
-      // console.log("1");
-      for (let i = 0; i < dataC.length; i++) {
-        document.getElementById(dataC[i]).disabled = false;
-        console.log(dataC[i]);
-      }
-    }
-    if (dataC.length < this.state.soVe) {
-      this.enable_selectTable(false);
-    }
-  };
+  // confirmData = () => {
+  //   this.props.confirm_Data();
+  // };
 
-  confirmData = () => {
-    this.props.confirm_Data();
-    this.setState({ show_block: [true, true] });
-    let new_data = this.state.selectedTicket;
-    new_data.map((item) => {
-      if (item.hang !== "") {
-        item.danhSachGhe.map((ele, index) => {
-          // console.log(ele.soGhe)
-          for (let i = 0; i < this.state.checkedTicket.length; i++) {
-            if (this.state.checkedTicket[i] == ele.soGhe) {
-              ele.daDat = true;
-            }
-            // else {ele.daDat = false;}
-          }
-        });
-      }
-    });
-    this.setState({
-      selectedTicket: new_data,
-    });
-  };
   render() {
     return (
       <div>
@@ -134,7 +65,7 @@ class BaiTapPhongVe extends Component {
                 </div>
               </div>
               <div className="text-center my-3">
-                <button className="confirm_btn" onClick={this.takeData}>
+                <button className="confirm_btn" onClick={()=> {this.takeData()}}>
                   Start Selecting
                 </button>
               </div>
@@ -142,12 +73,8 @@ class BaiTapPhongVe extends Component {
             {/* //input fields */}
             {/*-728x90-*/}
             {/* seat availabilty list */}
-            {/* <ConfimTicket
-              selectTick={this.selectTick}
-              selectedTicket={this.state.selectedTicket}
-              confirmData={this.confirmData}
-            /> */}
-            {this.state.show_block[0] && (
+            
+            {this.props.show_block[0] && (
               <div className="mx-auto ">
                 <ul className="seat_w3ls">
                   <li className="smallBox greenBox">Selected Seat</li>
@@ -171,7 +98,7 @@ class BaiTapPhongVe extends Component {
                     <button
                       className="confirm_btn"
                       onClick={() => {
-                        this.confirmData();
+                        this.props.confirm_Data();
                         // this.props.takeData({thísoVe, name, show_block })
                       }}
                     >
@@ -182,7 +109,7 @@ class BaiTapPhongVe extends Component {
               </div>
             )}
 
-            {this.state.show_block[1] && (
+            {this.props.show_block[1] && (
               <div
                 className="displayerBoxes txt-center"
                 style={{ overflowX: "auto" }}
@@ -232,7 +159,6 @@ class BaiTapPhongVe extends Component {
 const mapDispatchToProp = (dispatch) => {
   return {
     take_Data: (value) => {
-      // ở đây bóc ra để làm gì
       dispatch({
         type: "TAKE_DATA",
         payload: value,
@@ -240,7 +166,6 @@ const mapDispatchToProp = (dispatch) => {
     },
 
     confirm_Data: (value) => {
-      // ở đây bóc ra để làm gì
       dispatch({
         type: "CONFIRM_DATA",
         payload: value,

@@ -10,6 +10,13 @@ const DEFAULT_sTATE = {
 };
 
 export const DatVe = (state = DEFAULT_sTATE, action) => {
+  const disable_select = (boleen) => {
+    let c = document.querySelectorAll("input.seats");
+    for (let i = 0; i < c.length; i++) {
+      c[i].disabled = boleen;
+    }
+  };
+
   switch (action.type) {
     case "SELECT_TICKET": {
       console.log(action.payload);
@@ -28,36 +35,23 @@ export const DatVe = (state = DEFAULT_sTATE, action) => {
           dataC = filterResult;
         }
       }
-
       state.checkedTicket = dataC;
-
       console.log(dataC.length, state.soVe);
       if (dataC.length == state.soVe) {
-        let c = document.querySelectorAll("input.seats");
-        for (let i = 0; i < c.length; i++) {
-          c[i].disabled = true;
-        }
+        disable_select(true);
         for (let i = 0; i < dataC.length; i++) {
           document.getElementById(dataC[i]).disabled = false;
           console.log(dataC[i]);
         }
       }
       if (dataC.length < state.soVe) {
-        let c = document.querySelectorAll("input.seats");
-        for (let i = 0; i < c.length; i++) {
-          c[i].disabled = false;
-        }
+        disable_select(false);
       }
-
       return { ...state };
     }
 
     case "TAKE_DATA": {
-      let c = document.querySelectorAll("input.seats");
-      for (let i = 0; i < c.length; i++) {
-        c[i].disabled = false;
-      }
-
+      disable_select(false);
       console.log(action.payload);
       state.name = action.payload[0];
       state.soVe = action.payload[1];
@@ -80,9 +74,8 @@ export const DatVe = (state = DEFAULT_sTATE, action) => {
           });
         }
       });
-        state.selectedTicket = new_data;
-        console.log(state.checkedTicket)
-
+      state.selectedTicket = new_data;
+      console.log(state.checkedTicket);
 
       return { ...state };
     }
