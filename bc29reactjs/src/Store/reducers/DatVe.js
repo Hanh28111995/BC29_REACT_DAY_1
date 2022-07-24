@@ -10,6 +10,7 @@ const DEFAULT_sTATE = {
 };
 
 export const DatVe = (state = DEFAULT_sTATE, action) => {
+  
   const disable_select = (boleen) => {
     let c = document.querySelectorAll("input.seats");
     for (let i = 0; i < c.length; i++) {
@@ -18,6 +19,17 @@ export const DatVe = (state = DEFAULT_sTATE, action) => {
   };
 
   switch (action.type) {
+
+    case "TAKE_DATA": {
+      disable_select(false);
+      console.log(action.payload);
+      state.name = action.payload[0];
+      state.soVe = action.payload[1];
+      state.show_block = action.payload[2];
+      state.checkedTicket = [];
+      return { ...state };
+    }
+
     case "SELECT_TICKET": {
       console.log(action.payload);
       const [x, e, d] = action.payload;
@@ -47,16 +59,6 @@ export const DatVe = (state = DEFAULT_sTATE, action) => {
       if (dataC.length < state.soVe) {
         disable_select(false);
       }
-      return { ...state };
-    }
-
-    case "TAKE_DATA": {
-      disable_select(false);
-      console.log(action.payload);
-      state.name = action.payload[0];
-      state.soVe = action.payload[1];
-      state.show_block = action.payload[2];
-      state.checkedTicket = [];
       return { ...state };
     }
 

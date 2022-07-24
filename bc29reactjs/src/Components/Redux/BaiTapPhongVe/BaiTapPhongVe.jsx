@@ -6,23 +6,21 @@ import { connect } from "react-redux";
 
 class BaiTapPhongVe extends Component {
  
-
+//event lay gia tri tu` input
   getData = (event) => {
     const name = this.name.value;
     const NumberOfTicket = this.NumberOfTicket.value;
     return [name, NumberOfTicket];
   };
+  // dua gia tri do len props redux
   takeData = () => {
     const input_value = this.getData();
     console.log(input_value);
     if (parseInt(input_value[1]) > 0) {
-      this.props.take_Data([input_value[0],input_value[1],[true, false]]); ///// cái tui dispatch bên dưới là dòng n
+      this.props.take_Data([input_value[0],input_value[1],[true, false]]); 
     }
   };
 
-  // confirmData = () => {
-  //   this.props.confirm_Data();
-  // };
 
   render() {
     return (
